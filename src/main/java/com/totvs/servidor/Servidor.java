@@ -5,10 +5,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Servidor {
 
-	private volatile boolean isRunning;
+	private AtomicBoolean isRunning;
 	private ExecutorService threadPool;
 	private ServerSocket server;
 	
@@ -16,11 +17,11 @@ public class Servidor {
 		System.out.println("Iniciando servidor");
 		server = new ServerSocket(55555);
 		threadPool = Executors.newCachedThreadPool();
-		isRunning = true;
+		isRunning = new AtomicBoolean(true);
 	}
 	
 	public void run() throws IOException {
-		while(isRunning) {
+		while(isRunning.get()) {
 			Socket socket = server.accept();
 			System.out.printf("Novo cliente conectado na porta: %d\n", socket.getPort());
 			threadPool.execute(new TarefaCliente(socket, this));
@@ -28,7 +29,7 @@ public class Servidor {
 	}
 	
 	public void stop() throws IOException {
-		isRunning = false;
+		isRunning.set(false);
 		threadPool.shutdown();
 		server.close();
 	}
