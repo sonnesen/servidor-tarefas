@@ -1,6 +1,7 @@
 package com.totvs.servidor;
 
 import java.io.PrintStream;
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 public class Comando4 implements Callable<String> {
@@ -14,9 +15,11 @@ public class Comando4 implements Callable<String> {
 	@Override
 	public String call() throws InterruptedException {
 		System.out.println("Executando comando 4");
-		// simulando demora na execucao ao acesso ao banco de dados
+		printStream.println("Executando comando 4");
+		// simulando demora na requisicao ao banco de dados
 		Thread.sleep(20000);
+		int valor = new Random().nextInt(100) + 1;
 		printStream.println("Comando 4 executado com sucesso!");
-		return null;
+		return Integer.toString(valor);
 	}
 }

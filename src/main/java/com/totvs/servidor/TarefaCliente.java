@@ -4,7 +4,12 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class TarefaCliente implements Runnable {
 
@@ -39,8 +44,19 @@ public class TarefaCliente implements Runnable {
 					break;
 				case "c3":
 					printStream.println("Comando 3 recebido");
-					threadPool.submit(new Comando3(printStream));
-					threadPool.submit(new Comando4(printStream));
+					Future<String> submit = threadPool.submit(new Comando3(printStream));
+					Future<String> submit2 = threadPool.submit(new Comando4(printStream));
+					threadPool.submit(new Callable<Void>() {
+
+						@Override
+						public Void call() throws InterruptedException, ExecutionException, TimeoutException{
+							String result1 = submit.get(20, TimeUnit.SECONDS);
+							String result2 = submit2.get(20, TimeUnit.SECONDS);
+							printStream.println("Resultado do comando c3: " + result1 + ", " + result2);
+							return null;
+						}
+						
+					});
 					break;
 				case "fim":
 					printStream.println("Finalizando servidor");
