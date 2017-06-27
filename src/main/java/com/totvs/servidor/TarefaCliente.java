@@ -1,6 +1,8 @@
 package com.totvs.servidor;
 
+import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class TarefaCliente implements Runnable {
 
@@ -12,13 +14,16 @@ public class TarefaCliente implements Runnable {
 	
 	@Override
 	public void run() {
-		try {
+		try (Scanner scanner = new Scanner(socket.getInputStream())) {
 			System.out.println("Executando tarefa do cliente " + socket.getPort());
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			
+			while (scanner.hasNextLine()) {
+				System.out.println(scanner.nextLine());
+			}
+			
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
-
 	}
 
 }
