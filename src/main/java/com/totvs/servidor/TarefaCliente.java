@@ -37,6 +37,11 @@ public class TarefaCliente implements Runnable {
 					printStream.println("Comando 2 recebido");
 					threadPool.execute(new Comando2(printStream));
 					break;
+				case "c3":
+					printStream.println("Comando 3 recebido");
+					threadPool.submit(new Comando3(printStream));
+					threadPool.submit(new Comando4(printStream));
+					break;
 				case "fim":
 					printStream.println("Finalizando servidor");
 					server.stop();
