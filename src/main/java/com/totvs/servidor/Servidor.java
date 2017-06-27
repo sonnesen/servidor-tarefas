@@ -11,7 +11,7 @@ public class Servidor {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		System.out.println("Iniciando servidor");
 		ServerSocket server = new ServerSocket(55555);
-		ExecutorService threadPool = Executors.newFixedThreadPool(2);
+		ExecutorService threadPool = Executors.newCachedThreadPool();
 		
 		while(true) {
 			Socket socket = server.accept();
