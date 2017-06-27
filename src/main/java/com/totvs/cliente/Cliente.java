@@ -21,6 +21,13 @@ public class Cliente {
 			printStream.println(nextLine);
 		}
 		
+		System.out.println("Recebendo dados do servidor");
+		Scanner scanner2 = new Scanner(socket.getInputStream());
+		while (scanner2.hasNextLine()) {
+			System.out.println(scanner2.nextLine());
+		}
+		scanner2.close();
+		
 		printStream.close();
 		scanner.close();
 		socket.close();
