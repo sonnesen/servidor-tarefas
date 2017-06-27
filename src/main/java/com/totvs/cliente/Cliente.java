@@ -13,11 +13,13 @@ public class Cliente {
 		System.out.println("Cliente Conectado");
 		
 		PrintStream printStream = new PrintStream(socket.getOutputStream());
-		printStream.println("c1");
 		
-		// aguardando a tecla ENTER
 		Scanner scanner = new Scanner(System.in);
-		scanner.nextLine();
+		while(scanner.hasNextLine()) {			
+			String nextLine = scanner.nextLine();
+			if (("").equals(nextLine)) break;
+			printStream.println(nextLine);
+		}
 		
 		printStream.close();
 		scanner.close();
