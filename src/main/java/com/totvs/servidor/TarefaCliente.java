@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -16,9 +17,11 @@ public class TarefaCliente implements Runnable {
 	private Socket socket;
 	private Servidor server;
 	private ExecutorService threadPool;
+	private BlockingQueue<String> comandos;
 
-	public TarefaCliente(ExecutorService threadPool, Socket socket, Servidor server) {
+	public TarefaCliente(ExecutorService threadPool, BlockingQueue<String> comandos, Socket socket, Servidor server) {
 		this.threadPool = threadPool;
+		this.comandos = comandos;
 		this.socket = socket;
 		this.server = server;
 	}
@@ -58,6 +61,11 @@ public class TarefaCliente implements Runnable {
 						
 					});
 					break;
+				case "c4":
+					printStream.println("Comando 4 recebido");
+					comandos.put(nextLine);
+					printStream.println("Comando 4 adicionado na fila");					
+					break;
 				case "fim":
 					printStream.println("Finalizando servidor");
 					server.stop();
@@ -67,7 +75,7 @@ public class TarefaCliente implements Runnable {
 				}
 			}
 			
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			throw new RuntimeException(e);
 		}
 	}
