@@ -4,13 +4,16 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
 
 public class TarefaCliente implements Runnable {
 
 	private Socket socket;
 	private Servidor server;
+	private ExecutorService threadPool;
 
-	public TarefaCliente(Socket socket, Servidor server) {
+	public TarefaCliente(ExecutorService threadPool, Socket socket, Servidor server) {
+		this.threadPool = threadPool;
 		this.socket = socket;
 		this.server = server;
 	}
@@ -28,9 +31,11 @@ public class TarefaCliente implements Runnable {
 				switch (nextLine) {
 				case "c1":
 					printStream.println("Comando 1 recebido");
+					threadPool.execute(new Comando1(printStream));
 					break;
 				case "c2":
 					printStream.println("Comando 2 recebido");
+					threadPool.execute(new Comando2(printStream));
 					break;
 				case "fim":
 					printStream.println("Finalizando servidor");

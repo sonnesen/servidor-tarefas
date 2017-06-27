@@ -16,7 +16,7 @@ public class Servidor {
 	public Servidor() throws IOException {
 		System.out.println("Iniciando servidor");
 		server = new ServerSocket(55555);
-		threadPool = Executors.newCachedThreadPool();
+		threadPool = Executors.newFixedThreadPool(4); //newCachedThreadPool();
 		isRunning = new AtomicBoolean(true);
 	}
 	
@@ -24,7 +24,7 @@ public class Servidor {
 		while(isRunning.get()) {
 			Socket socket = server.accept();
 			System.out.printf("Novo cliente conectado na porta: %d\n", socket.getPort());
-			threadPool.execute(new TarefaCliente(socket, this));
+			threadPool.execute(new TarefaCliente(threadPool, socket, this));
 		}	
 	}
 	
