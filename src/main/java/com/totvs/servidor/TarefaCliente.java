@@ -8,9 +8,11 @@ import java.util.Scanner;
 public class TarefaCliente implements Runnable {
 
 	private Socket socket;
+	private Servidor server;
 
-	public TarefaCliente(Socket socket) {
+	public TarefaCliente(Socket socket, Servidor server) {
 		this.socket = socket;
+		this.server = server;
 	}
 	
 	@Override
@@ -29,6 +31,10 @@ public class TarefaCliente implements Runnable {
 					break;
 				case "c2":
 					printStream.println("Comando 2 recebido");
+					break;
+				case "fim":
+					printStream.println("Finalizando servidor");
+					server.stop();
 					break;
 				default:
 					printStream.println("Comando desconhecido");

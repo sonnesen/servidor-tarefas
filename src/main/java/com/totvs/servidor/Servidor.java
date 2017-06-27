@@ -23,7 +23,7 @@ public class Servidor {
 		while(isRunning) {
 			Socket socket = server.accept();
 			System.out.printf("Novo cliente conectado na porta: %d\n", socket.getPort());
-			threadPool.execute(new TarefaCliente(socket));
+			threadPool.execute(new TarefaCliente(socket, this));
 		}	
 	}
 	
