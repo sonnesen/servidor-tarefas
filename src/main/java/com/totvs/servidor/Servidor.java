@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 
 public class Servidor {
 
-	private boolean isRunning;
+	private volatile boolean isRunning;
 	private ExecutorService threadPool;
 	private ServerSocket server;
 	
