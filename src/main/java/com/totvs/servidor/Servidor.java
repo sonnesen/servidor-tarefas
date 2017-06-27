@@ -13,7 +13,7 @@ public class Servidor {
 		while(true) {
 			Socket socket = server.accept();
 			System.out.printf("Novo cliente conectado na porta: %d\n", socket.getPort());
-			Thread.sleep(10000);
+			new Thread(new TarefaCliente(socket)).start();
 		}
 	}
 
