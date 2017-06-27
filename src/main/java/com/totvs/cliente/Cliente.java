@@ -8,12 +8,12 @@ import java.util.Scanner;
 
 public class Cliente {
 
-	public static void main(String[] args) throws UnknownHostException, IOException {
+	public static void main(String[] args) throws UnknownHostException, IOException, InterruptedException {
 		Socket socket = new Socket("localhost", 55555);
 		System.out.println("Cliente Conectado");
 
 		// enviando dados para o servidor
-		new Thread(new Runnable() {
+		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				System.out.println("Enviando dados para o servidor");
@@ -30,10 +30,10 @@ public class Cliente {
 					throw new RuntimeException(e);
 				}
 			}
-		}).start();
+		});
 
 		// recebendo dados do servidor
-		new Thread(new Runnable() {
+		Thread t2 = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				System.out.println("Recebendo dados do servidor");
@@ -45,8 +45,13 @@ public class Cliente {
 					throw new RuntimeException(e);
 				}
 			}
-		}).start();
+		});
 
+		t1.start();
+		t2.start();
+		t2.join(); // a thread principal ira esperar esta thread terminar
+		
+		System.out.println("Fechando a conexao do cliente");
 		socket.close();
 
 	}
