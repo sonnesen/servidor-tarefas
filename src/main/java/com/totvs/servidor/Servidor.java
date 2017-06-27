@@ -16,7 +16,7 @@ public class Servidor {
 	public Servidor() throws IOException {
 		System.out.println("Iniciando servidor");
 		server = new ServerSocket(55555);
-		threadPool = Executors.newFixedThreadPool(4); //newCachedThreadPool();
+		threadPool = Executors.newFixedThreadPool(4, new FabricaDeThreads(Executors.defaultThreadFactory())); //newCachedThreadPool();
 		isRunning = new AtomicBoolean(true);
 	}
 	

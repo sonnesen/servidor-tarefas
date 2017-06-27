@@ -20,6 +20,9 @@ private PrintStream printStream;
 			throw new RuntimeException(e);
 		}
 		
-		printStream.println("Comando 2 executado com sucesso!");
+		// forcando uma excecao
+		throw new RuntimeException("Excecao no comando 2");
+		
+		// printStream.println("Comando 2 executado com sucesso!");
 	}
 }
